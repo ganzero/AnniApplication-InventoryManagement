@@ -2,3 +2,7 @@ name: AnniApplication
 version: '1.0-SNAPSHOT'
 main: me.ganzatron.anniApplication.AnniApplication
 api-version: '1.21'
+commands:
+  giveitems:
+    description: Gives the player an emerald, red dye, yellow dye, and blue dye
+    usage: /<command>

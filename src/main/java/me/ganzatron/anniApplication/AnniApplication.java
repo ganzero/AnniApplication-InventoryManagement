@@ -2,16 +2,34 @@ package me.ganzatron.anniApplication;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class AnniApplication extends JavaPlugin {
+import static me.ganzatron.anniApplication.ArmorMaterials.armorMaterials;
+
+
+public class AnniApplication extends JavaPlugin {
+
+    private GameManager gameManager;
+    private LifeManager lifeManager;
+    private InventoryManager inventoryManager;
+    private ArmorStandManager armorStandManager;
+    private EventListener eventListener;
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-        getLogger().info("Hello World!");
+        this.getCommand("giveitems").setExecutor(new GiveItemsCommand());
+        this.lifeManager = new LifeManager();
+        this.armorStandManager = new ArmorStandManager(armorMaterials);
+        this.inventoryManager = new InventoryManager(lifeManager, armorStandManager);
+        this.gameManager = new GameManager(inventoryManager, lifeManager, armorStandManager);
+        this.eventListener = new EventListener(inventoryManager, armorStandManager, gameManager);
+
+        getServer().getPluginManager().registerEvents(eventListener, this);
+
+        getLogger().info("AnniApplication enabled!");
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        getLogger().info("AnniApplication disabled!");
     }
+
 }
